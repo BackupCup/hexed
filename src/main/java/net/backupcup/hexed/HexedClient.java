@@ -19,5 +19,6 @@ public class HexedClient {
     @SubscribeEvent
     public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
         RegisterParticles.registerParticleFactory(event);
+        RegisterParticles.registerScreenParticleFactory(event);
     }
 }

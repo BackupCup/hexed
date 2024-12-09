@@ -1,6 +1,7 @@
 package net.backupcup.hexed.registry;
 
 import net.backupcup.hexed.Hexed;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -16,13 +17,17 @@ import team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticl
 public class RegisterParticles {
     public static DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Hexed.MOD_ID);
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<?>> FIRE_RUNE_PARTICLE =
+    public static final DeferredHolder<ParticleType<?>, LodestoneWorldParticleType> FIRE_RUNE_PARTICLE =
             PARTICLE_TYPES.register("fire", () -> new LodestoneWorldParticleType(){});
 
     public static final ScreenParticleType<ScreenParticleOptions> FIRE_RUNE_SCREEN =
             LodestoneScreenParticleTypes.registerType(new LodestoneScreenParticleType());
 
     public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
+        Minecraft.getInstance().particleEngine.register(FIRE_RUNE_PARTICLE.get(), LodestoneWorldParticleType.Factory::new);
+    }
+
+    public static void registerScreenParticleFactory(RegisterParticleProvidersEvent event) {
         LodestoneScreenParticleTypes.registerProvider(FIRE_RUNE_SCREEN,
                 new LodestoneScreenParticleType.Factory(LodestoneScreenParticleTypes.getSpriteSet(Hexed.getPath("fire"))));
     }

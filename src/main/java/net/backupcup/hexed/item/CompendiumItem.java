@@ -35,7 +35,7 @@ public class CompendiumItem extends Item implements ParticleEmitterHandler.ItemP
                 .setLifetime(7)
                 .setRandomOffset(0.05)
 
-                .setScaleData(GenericParticleData.create((float) (Math.sin((gameTime * 0.05f)) * 0.5f), 0f).build())
+                .setScaleData(GenericParticleData.create((float) (Math.sin((gameTime * 0.05f)) * 1f), 0.25f).build())
 
                 .setColorData(ColorParticleData.create(colorPair.getA(), colorPair.getA()).build())
                 .setSpinData(spinDataBuilder.setSpinOffset(0.785f - 0.01f * gameTime % 6.28f).build())
