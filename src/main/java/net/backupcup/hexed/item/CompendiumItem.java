@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import oshi.util.tuples.Pair;
 import team.lodestar.lodestone.handlers.screenparticle.ParticleEmitterHandler;
-import team.lodestar.lodestone.registry.common.particle.LodestoneScreenParticleTypes;
 import team.lodestar.lodestone.systems.easing.Easing;
 import team.lodestar.lodestone.systems.particle.builder.ScreenParticleBuilder;
 import team.lodestar.lodestone.systems.particle.data.GenericParticleData;
