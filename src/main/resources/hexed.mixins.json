@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "net.backupcup.hexed.mixin",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "hexed.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
