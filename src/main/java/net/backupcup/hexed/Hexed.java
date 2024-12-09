@@ -26,7 +26,9 @@ public class Hexed {
 
         RegisterItems.ITEMS.register(modEventBus);
         RegisterTabs.CREATIVE_MODE_TABS.register(modEventBus);
+
         RegisterParticles.PARTICLE_TYPES.register(modEventBus);
+        RegisterParticles.initializeParticles();
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

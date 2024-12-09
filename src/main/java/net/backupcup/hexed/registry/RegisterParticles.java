@@ -11,25 +11,53 @@ import team.lodestar.lodestone.registry.common.particle.LodestoneScreenParticleT
 import team.lodestar.lodestone.systems.particle.screen.LodestoneScreenParticleType;
 import team.lodestar.lodestone.systems.particle.screen.ScreenParticleOptions;
 import team.lodestar.lodestone.systems.particle.screen.ScreenParticleType;
-import team.lodestar.lodestone.systems.particle.screen.base.ScreenParticle;
 import team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticleType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class RegisterParticles {
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Hexed.MOD_ID);
 
-    public static DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Hexed.MOD_ID);
+    public static final Map<String, DeferredHolder<ParticleType<?>, LodestoneWorldParticleType>> particleMapWorld = new HashMap<>();
+    public static final Map<String, ScreenParticleType<ScreenParticleOptions>> particleMapScreen = new HashMap<>();
 
-    public static final DeferredHolder<ParticleType<?>, LodestoneWorldParticleType> FIRE_RUNE_PARTICLE =
-            PARTICLE_TYPES.register("fire", () -> new LodestoneWorldParticleType(){});
+    public static final List<String> RUNE_LIST = List.of(
+            "aether", "air", "alcohol", "amber", "black_tourmaline", "blood",
+            "bone", "copper", "cosmic_dust", "earth", "fire",
+            "glass", "gold", "ichor", "iron", "lead", "limestone",
+            "mercury", "moon", "nether", "opium", "philosopher_stone", "salt",
+            "shroom", "silver", "soul", "sulfur", "time", "tin",
+            "water", "wood"
+    );
 
-    public static final ScreenParticleType<ScreenParticleOptions> FIRE_RUNE_SCREEN =
-            LodestoneScreenParticleTypes.registerType(new LodestoneScreenParticleType());
+    public static void initializeParticles() {
+        RUNE_LIST.forEach(RegisterParticles::registerParticle);
+    }
+
+    private static void registerParticle(String name) {
+        var worldParticle = PARTICLE_TYPES.register(name, LodestoneWorldParticleType::new);
+        particleMapWorld.put(name, worldParticle);
+
+        var screenParticle = LodestoneScreenParticleTypes.registerType(new LodestoneScreenParticleType());
+        particleMapScreen.put(name, screenParticle);
+    }
 
     public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
-        Minecraft.getInstance().particleEngine.register(FIRE_RUNE_PARTICLE.get(), LodestoneWorldParticleType.Factory::new);
+        particleMapWorld.forEach((name, particle) ->
+                Minecraft.getInstance().particleEngine.register(particle.get(), LodestoneWorldParticleType.Factory::new)
+        );
     }
 
     public static void registerScreenParticleFactory(RegisterParticleProvidersEvent event) {
-        LodestoneScreenParticleTypes.registerProvider(FIRE_RUNE_SCREEN,
-                new LodestoneScreenParticleType.Factory(LodestoneScreenParticleTypes.getSpriteSet(Hexed.getPath("fire"))));
+        particleMapScreen.forEach((name, screenParticle) ->
+                LodestoneScreenParticleTypes.registerProvider(
+                        screenParticle,
+                        new LodestoneScreenParticleType.Factory(LodestoneScreenParticleTypes.getSpriteSet(Hexed.getPath(name)))
+                )
+        );
     }
+
 }
